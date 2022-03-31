@@ -1,0 +1,26 @@
+{
+  "name": "channeled",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "debug": "nodemon -e js,ts --watch src --exec \"yarn run start\"",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "start": "npm run clean && npm run build && node ./dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bunyan": "^1.8.15",
+    "dotenv": "^16.0.0",
+    "nodemon": "^2.0.15",
+    "prettier": "2.6.1",
+    "typescript": "4.6.3"
+  },
+  "dependencies": {
+    "@slack/bolt": "3.10.0"
+  }
+}
