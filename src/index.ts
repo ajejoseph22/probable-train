@@ -58,8 +58,6 @@ const addMessageToStore = ({
     message: event.text,
     channelId: event.channel,
   };
-
-  console.log(messageStore);
 };
 
 const addChannelToStore = async ({
@@ -78,11 +76,6 @@ const addChannelToStore = async ({
       channel: event.channel,
     });
   }
-
-  console.log(
-    "CHANNEL STORE",
-    inspect(channelStore, { showHidden: false, depth: null, colors: true })
-  );
 };
 
 const addTeamToStore = async ({
@@ -96,11 +89,6 @@ const addTeamToStore = async ({
     teamStore[workspaceId] = await client.team.info({
       team: workspaceId,
     });
-
-  console.log(
-    "TEAM STORE",
-    inspect(teamStore, { showHidden: false, depth: null, colors: true })
-  );
 };
 
 // Listen to messages in each channel the app is installed in
@@ -112,11 +100,6 @@ app.event("message", async ({ event, client, logger }) => {
       throw new Error("Invalid sender team");
     if (!("client_msg_id" in event && typeof event.client_msg_id === "string"))
       throw new Error("Invalid message received");
-
-    console.log("EVENT");
-    console.log(
-      inspect(event, { showHidden: false, depth: null, colors: true })
-    );
 
     const hostTeam = (await client.auth.teams.list()).teams![0];
     const sender = await client.users.info({ user: event.user });
@@ -146,18 +129,6 @@ app.event("message", async ({ event, client, logger }) => {
 // Listen for users opening your App Home
 app.event("app_home_opened", async ({ event, client, logger }) => {
   try {
-    logger.info(
-      "EVENT",
-      inspect(event, { showHidden: false, depth: null, colors: true })
-    );
-
-    logger.info("MESSAGE STORE", messageStore);
-
-    /*console.log("generatedBlocks");
-    console.log(
-      inspect(generatedBlocks, { showHidden: false, depth: null, colors: true })
-    );*/
-
     // @ts-ignore
     await publishToView(event.view.team_id, event.user)
 
@@ -171,8 +142,6 @@ app.event("app_home_opened", async ({ event, client, logger }) => {
 
 
 app.action('static_select-action', async ({ ack,body,payload }) => {
-  console.log("payload", inspect(payload, { showHidden: false, depth: null, colors: true }))
-  console.log("body", inspect(body, { showHidden: false, depth: null, colors: true }))
   await ack();
   // Update the message to reflect the action
 
@@ -181,9 +150,7 @@ app.action('static_select-action', async ({ ack,body,payload }) => {
   if (value?.endsWith("-1")) {
     const valueArraySplit=  value.split("-")
     const team= valueArraySplit[1];
-    console.log("TEAM", team)
     const messageTs = valueArraySplit[2]
-    console.log("messageTs", messageTs)
 
     await removeMessageFromStoreAndPublish({team, messageTs, user: body.user.id})
   }
