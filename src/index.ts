@@ -31,8 +31,6 @@ const messageStore: {
   };
 } = {};
 
-const views: string[] = [];
-
 const channelStore: { [workspaceId: string]: { [channelId: string]: any } } =
   {};
 
@@ -232,7 +230,7 @@ const publishToView = async (hostTeamId: string, userId: string) => {
     return acc;
   }, []);
 
-  const res = await app.client.views.publish({
+  await app.client.views.publish({
     user_id: userId,
     view: {
       type: "home",
